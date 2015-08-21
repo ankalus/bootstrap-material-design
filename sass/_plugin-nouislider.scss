@@ -103,8 +103,8 @@
 }
 
 .slider {
-    @include variations(".noUi-connect", background-color, $primary);
-    @include variations(".noUi-connect", background-color, $primary);
-    @include variations(".noUi-handle", background-color, $primary);
-    @include variations(".noUi-handle", border-color, $primary);
+    @include variations(" .noUi-connect", background-color, $primary);
+    @include variations(" .noUi-connect", background-color, $primary);
+    @include variations(" .noUi-handle", background-color, $primary);
+    @include variations(" .noUi-handle", border-color, $primary);
 }
