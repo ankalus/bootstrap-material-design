@@ -30,7 +30,7 @@
   // BTN .active effect
   @include generic-variations(".active:not(.btn-link):not(.btn-flat)", $btn-default, contrast, "background-color" );
   // BTN flat hover effect
-  @include generic-variations(".btn-flat:hover:not(.btn-link)", $btn-default, fade, "background-color" );
+  @include generic-variations(".btn-flat:hover:not(.btn-link)", $btn-default, fade_out, "background-color", 0.8 );
 
 }
 

@@ -11,13 +11,13 @@
   }
 }
 
-@mixin button-variant($color) {
-    background-color: $color;
-}
+// @mixin button-variant($color) {
+//     background-color: $color;
+// }
 
-@mixin alert-variant($color) {
-    background-color: $color;
-}
+// @mixin alert-variant($color) {
+//     background-color: $color;
+// }
 
 @mixin progress-bar-variant($color) {
     background-color: $color;
@@ -27,6 +27,231 @@
     background-color: $color;
 }
 
-@mixin icon-variant($color) {
-    color: $color;
+// @mixin icon-variant($color) {
+//     color: $color;
+// }
+
+
+// MIXIN FROM LESS
+$contrast-factor: 40%;
+
+@mixin color_variant($property, $color){
+  #{$property}: $color;
 }
+
+@mixin background_variant($material-color,$material-text-color){
+  background-color: $material-color;
+  @if ($material-color == $btn-default) {
+    color: $lightbg-text;
+  }
+  @if ($material-color != $btn-default) {
+    color: $material-text-color;
+  }
+}
+
+@mixin alert_variant($material-color,$material-text-color){
+
+  background-color: $material-color;
+  color: $material-text-color;
+
+  a, .alert-link {
+      color: $material-text-color;
+  }
+}
+
+@mixin navbar_variant($material-color,$material-text-color){
+    background-color: $material-color;
+    color: $material-text-color;
+    // deeply defined to override welljumbo class without !impotant need
+    .navbar-form .form-control-wrapper input.form-control::placeholder, .navbar-form input.form-control::placeholder {
+      color: $material-text-color;
+    }
+    .dropdown-menu {
+      border-radius: $dropdown-radius;
+      li > a {
+        font-size: $dropdown-font-size;
+        padding: 13px 16px;
+        &:hover,
+        &:focus {
+          color: $material-color;
+          background-color: $grey-200;
+        }
+      }
+      .active > a {
+        &:hover,
+        &:focus {
+          color: $material-text-color;
+        }
+        background-color: $material-color;
+        color: $material-text-color;
+      }
+    }
+  }
+
+@mixin variations($extra, $property, $default) {
+  @include generic-variations($extra, $default, color_variant, $property);
+}
+
+@mixin background-variations($extra, $default) {
+  @include generic-variations($extra, $default, background_variant);
+}
+
+@mixin text-variations($extra, $default) {
+  @include generic-variations($extra, $default, text_variant);
+}
+
+@mixin func($material-color, $material-text-color, $func, $property, $val: null){
+  @if $func == color_variant {
+    @include color_variant($property,$material-color);
+  } @else if $func == background_variant {
+    @include background_variant($material-color, $material-text-color);
+  } @else if $func == text_variant {
+    @include color_variant("color",$material-color);
+  } @else if $func == contrast {
+    @include color_variant($property,contrast($material-color, darken($material-color, 4%), lighten($material-color, 4%), $contrast-factor));
+  } @else if $func == fade_out {
+    @include color_variant($property,fade_out($material-color, $val));
+  } @else if $func == linear_gradient {
+    @include color_variant($property,(linear-gradient($material-color, $material-color), linear-gradient($input-underline-color, $input-underline-color)));
+  } @else if $func == box_shadow {
+    @include color_variant($property,(0 1px 3px 1px rgba(0,0,0,0.4), 0 0 0 15px fade($material-color, 10%)));
+  } @else if $func == navbar {
+    @include navbar_variant($material-color, $material-text-color);
+  } @else if $func == alert {
+    @include alert_variant($material-color, $material-text-color);
+  } @else{
+    @include color_variant($property,$val);
+  }
+}
+
+@mixin generic-variations($extra, $default, $func, $property: null, $val: null) {
+
+  // bootstrap styles
+  &#{$extra}, &-default#{$extra} {
+    $material-color-name: "default";
+    $material-color: $default;
+    $material-text-color: $darkbg-text;
+    @include func($material-color, $material-text-color, $func,$property, $val);
+  }
+  &-black#{$extra} {
+    $material-color-name: "black";
+    $material-color: $black;
+    $material-text-color: $darkbg-text;
+    @include func($material-color, $material-text-color, $func,$property, $val);
+  }
+  &-white#{$extra} {
+    $material-color-name: "white";
+    $material-color: $white;
+    $material-text-color: $lightbg-text;
+    @include func($material-color, $material-text-color, $func,$property, $val);
+  }
+  &-inverse#{$extra} {
+    $material-color-name: "inverse";
+    $material-color: $inverse;
+    $material-text-color: contrast($inverse, $lightbg-text, $darkbg-text, $contrast-factor);
+    @include func($material-color, $material-text-color, $func,$property, $val);
+  }
+  &-primary#{$extra} {
+    $material-color-name: "primary";
+    $material-color: $primary;
+    $material-text-color: $darkbg-text;
+    @include func($material-color, $material-text-color, $func,$property, $val);
+  }
+  &-success#{$extra} {
+    $material-color-name: "success";
+    $material-color: $success;
+    $material-text-color: $darkbg-text;
+    @include func($material-color, $material-text-color, $func,$property, $val);
+  }
+  &-info#{$extra} {
+    $material-color-name: "info";
+    $material-color: $info;
+    $material-text-color: $darkbg-text;
+    @include func($material-color, $material-text-color, $func,$property, $val);
+  }
+  &-warning#{$extra} {
+    $material-color-name: "warning";
+    $material-color: $warning;
+    $material-text-color: $darkbg-text;
+    @include func($material-color, $material-text-color, $func,$property, $val);
+  }
+  &-danger#{$extra} {
+    $material-color-name: "danger";
+    $material-color: $danger;
+    $material-text-color: $darkbg-text;
+    @include func($material-color, $material-text-color, $func,$property, $val);
+  }
+
+//   .generic-variations-factory(~"red");
+//   .generic-variations-factory(~"pink");
+//   .generic-variations-factory(~"purple");
+//   .generic-variations-factory(~"deep-purple");
+//   .generic-variations-factory(~"indigo");
+//   .generic-variations-factory(~"blue");
+//   .generic-variations-factory(~"light-blue");
+//   .generic-variations-factory(~"cyan");
+//   .generic-variations-factory(~"teal");
+//   .generic-variations-factory(~"green");
+//   .generic-variations-factory(~"light-green");
+//   .generic-variations-factory(~"lime");
+//   .generic-variations-factory(~"yellow");
+//   .generic-variations-factory(~"amber");
+//   .generic-variations-factory(~"orange");
+//   .generic-variations-factory(~"deep-orange");
+//   .generic-variations-factory(~"brown");
+//   .generic-variations-factory(~"grey");
+//   .generic-variations-factory(~"blue-grey");
+
+}
+
+
+$colors: (
+  red: $red,
+  pink: $pink,
+  purple: $purple,
+  deep-purple: $deep-purple,
+  indigo: $indigo,
+  blue: $blue,
+  light-blue: $light-blue,
+  cyan: $cyan,
+  teal: $teal,
+  green: $green,
+  light-green: $light-green,
+  lime: $lime,
+  yellow: $yellow,
+  amber: $amber,
+  orange: $orange,
+  deep-orange: $deep-orange,
+  brown: $brown,
+  grey: $grey,
+  blue-grey: $blue-grey
+);
+
+// @mixin colorSet($colorName) {
+//     color: map-get($colors, $colorName);
+//     &:hover {
+//         color: map-get($colors, $colorName#{-hover});
+//     }
+// }
+// a {
+//     @include colorSet(blue);
+// }
+
+
+
+// // given a color and its deph build css
+// @mixin generic-variations-factory-deep($material-color-number) {
+
+//   &-material-#{material-color-name}#{material-color-number}#{extra} {
+//     @material-color-full-name: "#{material-color-name}#{material-color-number}";
+//     @material-color: @@material-color-full-name;
+//     @material-text-color: contrast(@material-color, @lightbg-text, @darkbg-text, @contrast-factor);
+//     @include func($material-color, $material-text-color, $func,$property, $val);
+//   }
+
+// }
+
+// // given a color build multiples dephs
+// @mixin  generic-variations-factory($material-color-name) {
+//   @include generic-variations-factory-deep("");
+// }

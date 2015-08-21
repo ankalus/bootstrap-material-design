@@ -1,0 +1,5 @@
+.label {
+    border-radius: 1px;
+    @include variations("", background-color, $grey);
+
+}
