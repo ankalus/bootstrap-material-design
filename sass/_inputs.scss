@@ -197,8 +197,8 @@ fieldset[disabled] .form-control.focus:disabled,
       color: $input-info;
     }
   }
-  @include generic-variations(" .form-control:focus", $primary, linear_gradient);
-  @include generic-variations(" .form-control.focus", $primary, linear_gradient);
+  @include generic-variations(" .form-control:focus", $primary, linear_gradient, "background-image");
+  @include generic-variations(" .form-control.focus", $primary, linear_gradient, "background-image");
 
   @include variations(" .control-label", color, $lightbg-text);
   @include variations(" input.form-control:focus ~ .floating-label", color, $input-default);
